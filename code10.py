@@ -4,11 +4,11 @@ import random
 from PIL import Image, ImageDraw
 from Perlin_noise import PerlinNoiseFactory
 
-img = Image.new("RGBA", (1000, 1000), "white")
+img = Image.new("RGBA", (1000, 1000), "black")
 idraw = ImageDraw.Draw(img)
 
-width = 1000
-height = 1000
+width = 1500
+height = 1500
 
 left_x = int(width * -0.5)
 right_x = int(width * 1.5)
@@ -35,14 +35,34 @@ for column in range(num_columns):
         angle = noise_val * math.pi * 5
         grid[column][row] = angle
 
-for e in range(0, 1000):
-    x = random.randrange(1, 700)
-    y = random.randrange(1, 700)
-    num_steps = 500
+for e in range(0, 800):
+    x = random.randrange(0, 1000)
+    y = random.randrange(0, 1000)
+    num_steps = 700
     step_length = 1
     x1 = x
     y1 = y
-    color = random.choice(['black'])
+    if x < 100:
+        color = 'midnightblue'
+    elif x < 200:
+        color = 'navy'
+    elif x < 300:
+        color = 'mediumblue'
+    elif x < 400:
+        color = 'blue'
+    elif x < 500:
+        color = 'royalblue'
+    elif x < 600:
+        color = 'dodgerblue'
+    elif x < 700:
+        color = 'cornflowerblue'
+    elif x < 800:
+        color = 'skyblue'
+    elif e < 900:
+        color = 'darkturquoise'
+    elif e <= 1000:
+        color = 'turquoise'
+
     for _ in range(num_steps):
         idraw.point((x1, y1), color)
         x_offset = x - left_x
@@ -54,8 +74,8 @@ for e in range(0, 1000):
         y_step = step_length * math.sin(grid_angle)
         x = x + x_step
         y = y + y_step
-        x1 = x + random.choice([x_step, -x_step]) * 1
-        y1 = y + random.choice([y_step, -y_step]) * 1
+        x1 = x + random.choice([x_step, x_step]) * 1
+        y1 = y + random.choice([y_step, y_step]) * 1
 
 img.save('canvas.png')
 img.show()

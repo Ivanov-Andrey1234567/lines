@@ -1,8 +1,6 @@
 import math
 import random
-
 from PIL import Image, ImageDraw
-from Perlin_noise import PerlinNoiseFactory
 
 img = Image.new("RGBA", (1000, 1000), "white")
 idraw = ImageDraw.Draw(img)
@@ -18,27 +16,21 @@ resolution = int(width * 0.01)
 num_columns = int((right_x - left_x) / resolution)
 num_rows = int((bottom_y - top_y) / resolution)
 
-noise = PerlinNoiseFactory(2, tile=(0, 3))
-
 grid = []
 for e in range(num_columns):
     grid.append([])
     for j in range(num_rows):
         grid[e].append([])
 
-default_angle = math.pi * 0.25
 for column in range(num_columns):
     for row in range(num_rows):
-        scaled_x = column * 0.005
-        scaled_y = row * 0.005
-        noise_val = noise.__call__(scaled_x, scaled_y)
-        angle = noise_val * math.pi * 5
+        angle = (row / num_rows) * math.pi * 1.5
         grid[column][row] = angle
 
-for e in range(0, 1000):
-    x = random.randrange(1, 700)
-    y = random.randrange(1, 700)
-    num_steps = 500
+for e in range(0, 500):
+    x = random.randrange(0, 1000)
+    y = random.randrange(0, 1000)
+    num_steps = 1200
     step_length = 1
     x1 = x
     y1 = y
@@ -54,8 +46,8 @@ for e in range(0, 1000):
         y_step = step_length * math.sin(grid_angle)
         x = x + x_step
         y = y + y_step
-        x1 = x + random.choice([x_step, -x_step]) * 1
-        y1 = y + random.choice([y_step, -y_step]) * 1
+        x1 = x + random.choice([x_step, -x_step]) * 3
+        y1 = y + random.choice([y_step, -y_step]) * 3
 
 img.save('canvas.png')
 img.show()
